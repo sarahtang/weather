@@ -42,6 +42,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 
+import static android.view.View.INVISIBLE;
+
 /**
  * Get weather info from Dark Sky API
  * Set Skycons based on summary from API
@@ -55,17 +57,17 @@ public class MainActivity extends AppCompatActivity {
     double precipProbability;
     int timeRain;
     TextView requiredInfo;
-    static CloudFogView cloudFogView;
-    static CloudHvRainView cloudHvRainView;
-    static CloudMoonView cloudMoonView;
-    static CloudRainView cloudRainView;
-    static CloudSnowView cloudSnowView;
-    static CloudSunView cloudSunView;
-    static CloudThunderView cloudThunderView;
-    static CloudView cloudView;
-    static MoonView moonView;
-    static SunView sunView;
-    static WindView windView;
+    public static CloudFogView cloudFogView;
+    public static CloudHvRainView cloudHvRainView;
+    public static CloudMoonView cloudMoonView;
+    public static CloudRainView cloudRainView;
+    public static CloudSnowView cloudSnowView;
+    public static CloudSunView cloudSunView;
+    public static CloudThunderView cloudThunderView;
+    public static CloudView cloudView;
+    public static MoonView moonView;
+    public static SunView sunView;
+    public static WindView windView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +77,6 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //OG = set at invisible
         cloudFogView = (CloudFogView) findViewById(R.id.cloudFogView);
         cloudHvRainView = (CloudHvRainView) findViewById(R.id.cloudHvRainView);
         cloudMoonView = (CloudMoonView) findViewById(R.id.cloudMoonView);
@@ -89,18 +90,7 @@ public class MainActivity extends AppCompatActivity {
         windView = (WindView) findViewById(R.id.windView);
         requiredInfo = (TextView) findViewById(R.id.requiredText);
 
-
-        cloudFogView.setVisibility(View.INVISIBLE);
-        cloudHvRainView.setVisibility(View.INVISIBLE);
-        cloudMoonView.setVisibility(View.INVISIBLE);
-        cloudRainView.setVisibility(View.INVISIBLE);
-        cloudSnowView.setVisibility(View.INVISIBLE);
-        cloudSunView.setVisibility(View.INVISIBLE);
-        cloudThunderView.setVisibility(View.INVISIBLE);
-        cloudView.setVisibility(View.INVISIBLE);
-        moonView.setVisibility(View.INVISIBLE);
-        sunView.setVisibility(View.INVISIBLE);
-        windView.setVisibility(View.INVISIBLE);
+        Utils.iconInvisible();
 
         //Display required text that links to website
         requiredInfo.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //GRANTS PERMISSION FOR LOCATION
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -144,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                      * Is it going to rain in the next hour?
                      * Use minutely from Dark Sky API
                      */
+
                     int i = 0;
                     while (i <= 60) {
                         //Within the hour
@@ -182,31 +174,8 @@ public class MainActivity extends AppCompatActivity {
                      * Set which Skycon using based on summary
                      */
 
-                    cloudFogView.setVisibility(View.INVISIBLE);
-                    cloudHvRainView.setVisibility(View.INVISIBLE);
-                    cloudMoonView.setVisibility(View.INVISIBLE);
-                    cloudRainView.setVisibility(View.INVISIBLE);
-                    cloudSnowView.setVisibility(View.INVISIBLE);
-                    cloudSunView.setVisibility(View.INVISIBLE);
-                    cloudThunderView.setVisibility(View.INVISIBLE);
-                    cloudView.setVisibility(View.INVISIBLE);
-                    moonView.setVisibility(View.INVISIBLE);
-                    sunView.setVisibility(View.INVISIBLE);
-                    windView.setVisibility(View.INVISIBLE);
-
-                    sunView.setBgColor(Color.TRANSPARENT);
-                    moonView.setBgColor(Color.TRANSPARENT);
-                    cloudRainView.setBgColor(Color.TRANSPARENT);
-                    cloudSnowView.setBgColor(Color.TRANSPARENT);
-                    cloudHvRainView.setBgColor(Color.TRANSPARENT);
-                    windView.setBgColor(Color.TRANSPARENT);
-                    cloudView.setBgColor(Color.TRANSPARENT);
-                    cloudSunView.setBgColor(Color.TRANSPARENT);
-                    cloudMoonView.setBgColor(Color.TRANSPARENT);
-                    cloudSnowView.setBgColor(Color.TRANSPARENT);
-                    cloudThunderView.setBgColor(Color.TRANSPARENT);
-                    windView.setBgColor(Color.TRANSPARENT);
-                    cloudFogView.setBgColor(Color.TRANSPARENT);
+                    Utils.iconInvisible();
+                    Utils.iconTransparentBG();
 
                     ((TextView) findViewById(R.id.summaryText)).setText(currSummary);
                     ((TextView) findViewById(R.id.temperatureText)).setText(currTemperature + " °F");
@@ -261,7 +230,6 @@ public class MainActivity extends AppCompatActivity {
                         default:
                             cloudView.setVisibility(View.VISIBLE);
                             break;
-
                     }
 
                 } catch (Exception e) {
